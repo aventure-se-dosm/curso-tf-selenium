@@ -2,6 +2,7 @@ target/*
 .settings/*
 */pom.properties
 .classpath
+*/TestDrivers_custom.java
 
 
 
