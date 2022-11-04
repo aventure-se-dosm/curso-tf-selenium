@@ -1,8 +1,18 @@
 target/*
 .settings/*
+<<<<<<< HEAD
 */pom.properties
 .classpath
-*/TestDrivers_custom.java
+ src/main/java/TestDrivers_custom.java
+=======
+*./pom.properties
+.classpath
+src/main/java/TestDrivers_custom.java
+<<<<<<< HEAD
+>>>>>>> 6a1cb83 (interação com textifield, textarea, checkbox e radiobutton)
 
 
 
+/target/
+=======
+>>>>>>> b83539f (--amend)
