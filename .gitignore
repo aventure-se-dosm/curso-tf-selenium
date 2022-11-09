@@ -1,15 +1,5 @@
 target/*
 .settings/*
-<<<<<<< HEAD
 */pom.properties
 .classpath
- src/main/java/TestDrivers_custom.java
-
-
-
-/target/
-=======
->>>>>>> b83539f (--amend)
-=======
-/target/
->>>>>>> d756910 (finalizado o teste de cadastro, criação do pacote para o próximo módulo: dsl)
+src/main/java/TestDrivers_custom.java
