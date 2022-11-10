@@ -3,6 +3,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -149,10 +150,25 @@ public class TesteCampoDeTreinamento {
 	}
 
 	@Test
+	public void testCombo_singleSelection() {
+
+		Select escolaridadeComboSelect = new Select(webdriver.findElement(By.id("elementosForm:escolaridade")));
+
+		escolaridadeComboSelect.selectByIndex(1);
+		escolaridadeComboSelect.selectByIndex(4);
+		escolaridadeComboSelect.selectByIndex(2);
+
+		Assert.assertTrue(escolaridadeComboSelect.getAllSelectedOptions().size() == 1);
+		Assert.assertEquals(escolaridadeComboSelect.getFirstSelectedOption(),
+				escolaridadeComboSelect.getOptions().get(2));
+
+	}
+
+	@Test
 	public void testCombo_multiselection() {
 
 		// buscar o combo
-		Select escolaridadeComboSelect = new Select(webdriver.findElement(By.id("elementosForm:esportes")));
+		Select esporteComboSelect = new Select(webdriver.findElement(By.id("elementosForm:esportes")));
 
 		/*
 		 * <option value="1grauincomp">1o grau incompleto</option>
@@ -161,36 +177,87 @@ public class TesteCampoDeTreinamento {
 		 */
 
 		// seleção por índice: 0 -> natacao -> Natação
-		escolaridadeComboSelect.selectByIndex(0);
-		
-		//por value: futebol -> 1 -> futebol -> Futebol
-		escolaridadeComboSelect.selectByValue("futebol");
-		
-		//por texto apresentado - já selecionado 1 -> futebol -> Futebol
-		escolaridadeComboSelect.selectByVisibleText("Futebol");
-		
-		
+		esporteComboSelect.selectByIndex(0);
 
-		
-		//var selectedEscolaridadel = escolaridadeComboSelect.getAllSelectedOptions();
+		// por value: futebol -> 1 -> futebol -> Futebol
+		esporteComboSelect.selectByValue("futebol");
 
-		Assert.assertTrue(escolaridadeComboSelect.getOptions().get(0).isSelected());
-		Assert.assertTrue(escolaridadeComboSelect.getOptions().get(1).isSelected());
-		Assert.assertFalse(escolaridadeComboSelect.getOptions().get(2).isSelected());
-		Assert.assertFalse(escolaridadeComboSelect.getOptions().get(3).isSelected());
-		Assert.assertFalse(escolaridadeComboSelect.getOptions().get(4).isSelected());
-		
-		escolaridadeComboSelect.deselectByIndex(0);
-		
-		Assert.assertFalse(escolaridadeComboSelect.getOptions().get(0).isSelected());
+		// por texto apresentado - já selecionado 1 -> futebol -> Futebol
+		esporteComboSelect.selectByVisibleText("Futebol");
+
+		// var selectedEsportel = esporteComboSelect.getAllSelectedOptions();
+
+		Assert.assertTrue(esporteComboSelect.getOptions().get(0).isSelected());
+		Assert.assertTrue(esporteComboSelect.getOptions().get(1).isSelected());
+		Assert.assertFalse(esporteComboSelect.getOptions().get(2).isSelected());
+		Assert.assertFalse(esporteComboSelect.getOptions().get(3).isSelected());
+		Assert.assertFalse(esporteComboSelect.getOptions().get(4).isSelected());
+
+		esporteComboSelect.deselectByIndex(0);
+
+		Assert.assertFalse(esporteComboSelect.getOptions().get(0).isSelected());
 	}
 
+	@Test
+
+	public void Button_test() {
+
+		WebElement button = webdriver.findElements(By.id("buttonSimple")).stream()
+				.filter(p -> p.getAttribute("value").equals("Clique Me!")).findFirst().orElse(null);
+
+		Assert.assertNotNull(button);
+		Assert.assertEquals(button.getAttribute("value"), "Clique Me!");
+		button.click();
+		Assert.assertEquals(button.getAttribute("value"), "Obrigado!");
+
+		// idempotência
+		button.click();
+		Assert.assertEquals(button.getAttribute("value"), "Obrigado!");
+	}
+
+
+	@Test
+	public void linkTest() {
+
+		WebElement link_voltar, resultado;
+		
+		link_voltar= webdriver.findElement(By.linkText("Voltar"));
+
+		link_voltar.click();
+		
+		resultado = webdriver.findElement(By.id("resultado"));
+
+		/**
+		 * O link em si não tem ID, mas em sua posição surge um elemento
+		 * com id="resultado". É ele que devemos testar como resultado do clique.
+		 */
+		Assert.assertEquals(resultado.getText(), "Voltou!");
+
+	}
+
+	@Test
+	public void SearchByGottenTextFromTagElement() {
+
+		/**
+		 * Objetivo: dada uma tag html contendo grande conteúdo de texto, obtê-lo para
+		 * depois procurarmos por valores ou nomes significativos.
+		 */
+
+		String bodyText = webdriver.findElement(By.tagName("body")).getText();
+
+		System.out.println(bodyText);
+
+		Assert.assertTrue(bodyText.contains("Doutorado"));
+	}
+
+	@Ignore
+	@Test
+	public void textArea_interaction() {
+
+	}
+	
 	private void quitWebDrivers() {
-//		webdrivers.forEach(wd -> {
-//			wd.wait(10000L);
-//			wd.quit();
-//		});
-		// webdriver.wait(10000L);
+
 		if (webdriver != null) {
 			// webdriver.close();
 			webdriver.quit();
@@ -202,5 +269,4 @@ public class TesteCampoDeTreinamento {
 
 		quitWebDrivers();
 	}
-
 }
