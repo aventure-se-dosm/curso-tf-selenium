@@ -216,21 +216,20 @@ public class TesteCampoDeTreinamento {
 		Assert.assertEquals(button.getAttribute("value"), "Obrigado!");
 	}
 
-
 	@Test
 	public void linkTest() {
 
 		WebElement link_voltar, resultado;
-		
-		link_voltar= webdriver.findElement(By.linkText("Voltar"));
+
+		link_voltar = webdriver.findElement(By.linkText("Voltar"));
 
 		link_voltar.click();
-		
+
 		resultado = webdriver.findElement(By.id("resultado"));
 
 		/**
-		 * O link em si não tem ID, mas em sua posição surge um elemento
-		 * com id="resultado". É ele que devemos testar como resultado do clique.
+		 * O link em si não tem ID, mas em sua posição surge um elemento com
+		 * id="resultado". É ele que devemos testar como resultado do clique.
 		 */
 		Assert.assertEquals(resultado.getText(), "Voltou!");
 
@@ -256,7 +255,7 @@ public class TesteCampoDeTreinamento {
 	public void textArea_interaction() {
 
 	}
-	
+
 	private void quitWebDrivers() {
 
 		if (webdriver != null) {

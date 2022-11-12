@@ -19,16 +19,6 @@ public class TestDrivers {
 	@Ignore
 	public void TestZero() {
 
-		/**
-		 * [1] Set a a path for wabpage and a webdriver;
-		 * 
-		 * [2] Set browser's windows properties a. size; b. position; c. etc....
-		 * 
-		 * [3] go to a webpage by the set path
-		 * 
-		 * [4] Make tests as you want for.
-		 */
-
 		Assert.fail();
 	}
 
