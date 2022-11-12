@@ -9,6 +9,7 @@ target/*
 .classpath
 src/main/java/TestDrivers_custom.java
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 6a1cb83 (interação com textifield, textarea, checkbox e radiobutton)
 
 
@@ -16,3 +17,6 @@ src/main/java/TestDrivers_custom.java
 /target/
 =======
 >>>>>>> b83539f (--amend)
+=======
+/target/
+>>>>>>> d756910 (finalizado o teste de cadastro, criação do pacote para o próximo módulo: dsl)

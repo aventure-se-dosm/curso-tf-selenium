@@ -1,3 +1,4 @@
+package macarronada;
 
 import org.junit.Assert;
 import org.junit.Ignore;
