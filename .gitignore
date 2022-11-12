@@ -3,6 +3,3 @@ target/*
 */pom.properties
 .classpath
 src/main/java/TestDrivers_custom.java
-
-
-
