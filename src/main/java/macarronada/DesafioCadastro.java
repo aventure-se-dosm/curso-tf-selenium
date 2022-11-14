@@ -1,8 +1,11 @@
 package macarronada;
 
 import java.util.List;
+<<<<<<< HEAD
 
 import org.junit.After;
+=======
+>>>>>>> b2631067e84df9ddf761d0c2ed908326b6ac6ce5
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,6 +85,7 @@ public class DesafioCadastro {
 
 	}
 
+<<<<<<< HEAD
 
 
 	private void quitWebDrivers() {
@@ -102,3 +106,6 @@ public class DesafioCadastro {
 		quitWebDrivers();
 	}
 }
+=======
+}
+>>>>>>> b2631067e84df9ddf761d0c2ed908326b6ac6ce5
