@@ -1,6 +1,8 @@
 package macarronada;
 
 import java.util.List;
+
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,5 +81,28 @@ public class DesafioCadastro {
 		Assert.assertTrue(webdriver.findElement(By.id("resultado")).getText().contains(cadastro));
 
 	}
+
+
+}
+
+
+	private void quitWebDrivers() {
+//	webdrivers.forEach(wd -> {
+//		wd.wait(10000L);
+//		wd.quit();
+//	});
+		// webdriver.wait(10000L);
+		if (webdriver != null) {
+			// webdriver.close();
+			webdriver.quit();
+		}
+	}
+
+	@After
+	public void finish_each() {
+
+		quitWebDrivers();
+	}
+}
 
 }
