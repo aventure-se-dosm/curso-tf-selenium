@@ -2,7 +2,7 @@ package macarronada;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Stream;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -50,45 +50,83 @@ public class TestFrames {
 	}
 
 	@Test
-	public void GetNewWindowTextAlreadyWrittenOnSomeOfItsTextAreasTest () {
+
+	public void DeveEscreverNaPopupENaTelaPrincipal() {
 		/**
-		 * Ao clicar no <button id=buttonPopUpEasy> abrimos uma janela
-		 * (window) que sempre insere um novo TextArea. Caso não esteja,
-		 * uma nova janela é aberta e apenas uma TextArea é exibida.
+		 * Ao clicar no <button id=buttonPopUpEasy> abrimos uma janela (window) que
+		 * sempre insere um novo TextArea. Caso não esteja, uma nova janela é aberta e
+		 * apenas uma TextArea é exibida.
+		 */
+
+		webdriver.findElement(By.id("buttonPopUpEasy")).click();
+		webdriver.findElement(By.id("buttonPopUpEasy")).click();
+		webdriver.findElement(By.id("buttonPopUpEasy")).click();
+
+		// consultando a nova janela aberta (identificada como 'Popup')
+		var popup = webdriver.switchTo().window("Popup");
+
+		// Pegar os textAreas obtidos com os clicks:
+
+		List<WebElement> textareas = popup.findElements(By.tagName("textarea"));
+		Assert.assertEquals(3, textareas.size());
+
+		ArrayList<String> message = new ArrayList<>();
+
+		message.addAll(Arrays.asList("Eu", "Te", "Amo!"));
+
+
+		List<String> allTextAreaTexts = new ArrayList<>();
+
+		 textareas.forEach(p-> p.sendKeys(message.remove(0)));
+
+
+		textareas.forEach(e -> allTextAreaTexts.add(e.getAttribute("value")));
+
+
+		Assert.assertEquals(Arrays.asList("Eu Te Amo!".split(" ")).subList(0, 3), allTextAreaTexts.subList(0, 3));
+
+	}
+	
+	@Test
+	public void deveInteragirComJanelaSemIDTest () {
+		
+		/**
+		 * Usa popud do mal.
+		 * procurams pela janela aberta sem id com
+		 * webdriver.getWindowHandles()
 		 */
 		
+		webdriver.findElement(By.id("buttonPopUpHard")).click();
 		
-		webdriver.findElement(By.id("buttonPopUpEasy")).click();
-		webdriver.findElement(By.id("buttonPopUpEasy")).click();
-		webdriver.findElement(By.id("buttonPopUpEasy")).click();
+		//procura a popup sem id aberpa
 		
-		//consultando a nova janela aberta (identificada como 'Popup')
-		var popup = webdriver.switchTo().window("Popup");
-		 popup = webdriver.switchTo().window("Popup");
+		var janelas = webdriver.getWindowHandles().toArray();
+	
 		
-		//Pegar os textAreas obtidos com os clicks: 
+		Assert.assertEquals(janelas[1].toString(), (String)janelas[1]);
 		
+		var textAreaContent = "Você é linda!";
+				
+		var textArea = webdriver.switchTo().window(janelas[1].toString()).findElement(By.tagName("textarea"));
 		
-		var textareas = popup.findElements(By.tagName("textarea"));
-		Assert.assertEquals(3, textareas.size());
+		textArea.sendKeys(textAreaContent);
 		
-		ArrayList<String> message = new ArrayList<>();
+		Assert.assertEquals(textAreaContent, textArea.getAttribute("value"));
+	
 		
-		message.addAll(Arrays.asList("Eu", "Te", "Amo!"));
-		
-
-		//textareas.forEach(p-> p.sendKeys(message.remove(0)));
-		
-		for (WebElement textAreaElement: textareas) {
-			textAreaElement.sendKeys(message.remove(0));
-		}
-		
-		var message2 = Arrays.asList("Eu", "Te", "Amo!");
-		
-		
-		Assert.assertArrayEquals(message2.toArray() ,textareas.stream().map(t -> t.getText()).toArray<String>());
-			
 	}
+	
+	@Test
+	public void RegrasDeNeocioTest () {
+		/**
+		 * Nome: Obrigatório
+		 * Sobrenome: obrigatório
+		 * Vegetariano: sem opções de carnes marcadas
+		 * 
+		 */
+	}
+	
+	
 
 	private void quitWebDrivers() {
 //		webdrivers.forEach(wd -> {
