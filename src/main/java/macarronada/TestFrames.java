@@ -116,15 +116,7 @@ public class TestFrames {
 		
 	}
 	
-	@Test
-	public void RegrasDeNeocioTest () {
-		/**
-		 * Nome: Obrigatório
-		 * Sobrenome: obrigatório
-		 * Vegetariano: sem opções de carnes marcadas
-		 * 
-		 */
-	}
+	
 	
 	
 

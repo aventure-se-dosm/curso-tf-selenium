@@ -1,11 +1,14 @@
 package macarronada;
 
 import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -32,7 +35,7 @@ public class DesafioCadastro {
 	public void cadastro() {
 
 		String cadastro = "Cadastrado!\n" + "Nome: Marcelo\n" + "Sobrenome: de Oliveira\n" + "Sexo: Masculino\n"
-				+ "Comida: Carne Frango Pizza\n" + "Escolaridade: 2graucomp\r\n" + "Esportes: Natacao Futebol\r\n"
+				+ "Comida: Carne Frango Pizza\n" + "Escolaridade: 2graucomp\n" + "Esportes: Natacao Futebol\n"
 				+ "Sugestoes: Por meta charset=\"UTF-8\" para evitar problemas de codificacao!";
 
 		cadastro = cadastro.trim();
@@ -70,21 +73,88 @@ public class DesafioCadastro {
 				.sendKeys("Por meta charset=\"UTF-8\" para evitar problemas de codificacao!");
 
 		// finalizar cadastro
-		var button = webdriver.findElements(By.id("elementosForm:cadastrar")).stream()
-				.filter(e -> e.getAttribute("type").equals("button"))
-				.filter(e -> e.getAttribute("value").toString().equals("Cadastrar")).findFirst().get();
+		cadastrar();
 
-		button.click();
 		System.out.println(webdriver.findElement(By.id("resultado")).getText());
 		System.out.println(cadastro);
-		Assert.assertTrue(webdriver.findElement(By.id("resultado")).getText().contains(cadastro));
+		Assert.assertEquals(webdriver.findElement(By.id("resultado")).getText(), (cadastro));
 
 	}
 
+	private void cadastrar() {
 
+		webdriver.findElements(By.id("elementosForm:cadastrar")).stream()
+				.filter(e -> e.getAttribute("type").equals("button"))
+				.filter(e -> e.getAttribute("value").toString().equals("Cadastrar")).findFirst().get().click();
+	}
 
+	@Test
+//	@Ignore
+	public void nomeObrigatorioAusenteTest() {
 
+		cadastrar();
 
+		Assert.assertEquals(("Nome eh obrigatorio"), webdriver.switchTo().alert().getText());
+
+	};
+
+	@Test
+	@Ignore
+	public void SobrenomeomeObrigatorioAusenteTest() {
+
+		webdriver.findElement(By.id("elementosForm:nome")).sendKeys("Marcelo");
+
+		cadastrar();
+
+		Assert.assertEquals(("Sobrenome eh obrigatorio"), webdriver.switchTo().alert().getText());
+	};
+
+	@Test
+	public void VegetarianoCoerenteTest() {
+
+		webdriver.findElement(By.id("elementosForm:nome")).sendKeys("Marcelo");
+		webdriver.findElement(By.id("elementosForm:sobrenome")).sendKeys("de Oliveira");
+		webdriver.findElement(By.id("elementosForm:sexo:0")).click();
+
+		List<WebElement> comidas = webdriver.findElements(By.tagName("input"));
+		comidas.removeIf(p -> !((p.getAttribute("type").equals("checkbox")
+				&& (p.getAttribute("id").contains("elementosForm:comidaFavorita")))));
+
+		comidas.forEach(p -> p.click());
+
+		cadastrar();
+
+		var alert = webdriver.switchTo().alert();
+		var texto = alert.getText();
+
+		Assert.assertEquals(("Tem certeza que voce eh vegetariano?"), texto);
+		alert.accept();
+
+		// desseleciona carne
+		comidas.stream().filter(p -> p.getAttribute("value").equals("carne")).findFirst().get().click();
+
+		cadastrar();
+		Assert.assertEquals(("Tem certeza que voce eh vegetariano?"), alert.getText());
+		alert.accept();
+
+		// desseleciona frango, mas seleciona caene
+		comidas.stream().filter(p -> p.getAttribute("value").equals("frango")).findFirst().get().click();
+		comidas.stream().filter(p -> p.getAttribute("value").equals("carne")).findFirst().get().click();
+
+		cadastrar();
+		Assert.assertEquals(("Tem certeza que voce eh vegetariano?"), alert.getText());
+		alert.accept();
+
+		// desseleciona pizza
+		comidas.stream().filter(p -> p.getAttribute("value").equals("pizza")).findFirst().get().click();
+
+		cadastrar();
+		Assert.assertEquals(("Tem certeza que voce eh vegetariano?"), alert.getText());
+		alert.accept();
+
+		Assert.assertThrows(NoAlertPresentException.class, () -> alert.accept());
+		// webdriver.switchTo().alert().;
+	};
 
 	private void quitWebDrivers() {
 //	webdrivers.forEach(wd -> {
@@ -104,7 +174,4 @@ public class DesafioCadastro {
 		quitWebDrivers();
 	}
 
-
-
 }
-
