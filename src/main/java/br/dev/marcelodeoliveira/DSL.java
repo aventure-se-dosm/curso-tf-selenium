@@ -57,10 +57,6 @@ public class DSL {
 	// apenas clica no elemento, independentemente da reversibilidade
 	// ou idempotência da opetação.
 
-	private void clicar(WebElement clicavel) {
-		clicavel.click();
-
-	}
 
 	public boolean isCheckSelecionado(String id) {
 
