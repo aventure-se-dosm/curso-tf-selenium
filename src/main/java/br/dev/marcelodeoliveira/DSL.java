@@ -26,6 +26,10 @@ public class DSL {
 		return driver.findElements(atributo);
 
 	}
+	
+
+	
+
 
 	WebElement buscaPorAtributo_primeiro(By atributo) {
 
@@ -56,11 +60,6 @@ public class DSL {
 
 	// apenas clica no elemento, independentemente da reversibilidade
 	// ou idempotência da opetação.
-
-	private void clicar(WebElement clicavel) {
-		clicavel.click();
-
-	}
 
 	public boolean isCheckSelecionado(String id) {
 
@@ -99,6 +98,17 @@ public class DSL {
 		return buscaPorAtributo(By.tagName("option")).stream().filter(p -> p.getAttribute("id").equals(id)).findFirst()
 				.get();
 
+	}
+
+	// ************** Atributos de WebElement **************
+
+	public String obterAtributo(WebElement w, String value) {
+		try {
+			return w.getAttribute(value.toLowerCase());
+		} catch (UnsupportedOperationException e) {
+			e.getLocalizedMessage();
+			return null;
+		}
 	}
 
 }

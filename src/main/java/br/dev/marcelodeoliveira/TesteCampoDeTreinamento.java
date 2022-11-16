@@ -1,6 +1,7 @@
 package br.dev.marcelodeoliveira;
 
 import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,6 +19,7 @@ public class TesteCampoDeTreinamento {
 	private final String PAGE_LOCATION = "file:///" + APP_ROOT + "/src/main/resources/campo_de_testes/componentes.html";
 
 	private static WebDriver webdriver;
+	DSL dsl;
 
 	// private List<WebDriver> webdrivers = null;
 
@@ -31,6 +33,8 @@ public class TesteCampoDeTreinamento {
 
 		// webdriver = new ChromeDriver();
 		webdriver = new FirefoxDriver();
+
+		dsl = new DSL(webdriver);
 
 		/*
 		 * por utilizarmos a mesma url podemos declarar a url da página aqui
@@ -59,12 +63,14 @@ public class TesteCampoDeTreinamento {
 		// queremos apenas um (primeiro): usamos findElement (singular)
 		// queremos todas as ocorrências: usamos findElements (plural)
 		// .get para pegar algun dos vários encontrados
-		WebElement name_by_id_1st = webdriver.findElement(By.id("elementosForm:sobrenome"));
+		WebElement name_by_id_1st = dsl.buscaPorId("elementosForm:sobrenome");
+//webdriver.findElement(By.id("elementosForm:sobrenome"));
 
 		// escrevemos com o método SendKeys (String s).
-		name_by_id_1st.sendKeys("Askon Tundia");
+		dsl.escreveTexto(name_by_id_1st, "Askon Tundia");
+		// name_by_id_1st.sendKeys("Askon Tundia");
 
-		Assert.assertTrue("Askon Tundia".equals(name_by_id_1st.getAttribute("value")));
+		Assert.assertEquals("Askon Tundia", dsl.obterAtributo(name_by_id_1st, "VaLuE"));
 
 		// webdriver.close();
 
@@ -74,15 +80,17 @@ public class TesteCampoDeTreinamento {
 	public void testRadioButton_values_correctness() {
 
 		// RadioButtons
-		WebElement radioButton_0 = webdriver.findElement(By.id("elementosForm:sexo:0"));
-		WebElement radioButton_1 = webdriver.findElement(By.id("elementosForm:sexo:1"));
+		WebElement radioButton_0 = dsl.buscaPorAtributo_primeiro(By.id("elementosForm:sexo:0"));
+//				webdriver.findElement(By.id("elementosForm:sexo:0"));
+		WebElement radioButton_1 = dsl.buscaPorId("elementosForm:sexo:1");
 
-		By.tagName("label");
-		// Labels
-		webdriver.findElements(By.tagName("Label")).forEach(p -> System.out.println(p.getText()));
+		/*
+		 * // Labels webdriver.findElements(By.tagName("Label")).forEach(p ->
+		 * System.out.println(p.getText()));
+		 */
 
 		// achamos o label que rotula o radiobutton id M:
-		WebElement masc = webdriver.findElements(By.tagName("Label")).stream()
+		WebElement masc = dsl.buscaPorAtributo(By.tagName("Label")).stream()
 				.filter(p -> p.getText().equalsIgnoreCase("masculino")).findFirst().get();
 
 		// achamos o label que rotula o radiobutton id F:
@@ -133,16 +141,29 @@ public class TesteCampoDeTreinamento {
 	public void TestCheckBox_multipleChoice() {
 		// Lista com todos os Checkboxs de comida favorita
 		List<WebElement> feedOptions = webdriver.findElements(By.name("elementosForm:comidaFavorita"));
+
 		feedOptions.forEach(chkb -> {
-			chkb.click();
-			if (feedOptions.indexOf(chkb) % 2 == 0)
+			try {
+				Thread.sleep(5000L);
 				chkb.click();
+				if (feedOptions.indexOf(chkb) % 2 == 0) {
+					Thread.sleep(5000L);
+					chkb.click();
+				}
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			System.out.println(chkb.getAttribute("value"));
 		});
 
 		Assert.assertFalse(feedOptions.get(0).isSelected());
+
 		Assert.assertTrue(feedOptions.get(1).isSelected());
+
 		Assert.assertFalse(feedOptions.get(2).isSelected());
+
 		Assert.assertTrue(feedOptions.get(3).isSelected());
 
 		Assert.assertFalse(feedOptions == null);
