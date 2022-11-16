@@ -1,4 +1,4 @@
-package macarronada;
+package br.dev.marcelodeoliveira;
 
 import java.util.List;
 import org.junit.After;

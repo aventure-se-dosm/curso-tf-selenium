@@ -1,4 +1,4 @@
-package macarronada;
+package br.dev.marcelodeoliveira;
 
 import org.junit.Assert;
 import org.junit.Ignore;
