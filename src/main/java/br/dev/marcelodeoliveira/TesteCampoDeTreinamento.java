@@ -19,7 +19,11 @@ public class TesteCampoDeTreinamento {
 	private final String PAGE_LOCATION = "file:///" + APP_ROOT + "/src/main/resources/campo_de_testes/componentes.html";
 
 	private static WebDriver webdriver;
-	DSL dsl;
+
+
+
+	DSL dsl = new DSL(webdriver);
+
 
 	// private List<WebDriver> webdrivers = null;
 

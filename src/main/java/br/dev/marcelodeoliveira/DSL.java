@@ -61,6 +61,7 @@ public class DSL {
 	// apenas clica no elemento, independentemente da reversibilidade
 	// ou idempotência da opetação.
 
+
 	public boolean isCheckSelecionado(String id) {
 
 		return buscaPorId(id).isSelected();
