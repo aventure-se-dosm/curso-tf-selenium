@@ -82,10 +82,6 @@ public class DesafioCadastro {
 
 	}
 
-
-}
-
-
 	private void quitWebDrivers() {
 //	webdrivers.forEach(wd -> {
 //		wd.wait(10000L);
@@ -103,6 +99,4 @@ public class DesafioCadastro {
 
 		quitWebDrivers();
 	}
-}
-
 }
